@@ -6,12 +6,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.awt.Rectangle;
 
 public class Hero{
 
 	public int x = 30;
 	public int y = 30;
-	
+	public int height;
+	public int width;
+
 	public BufferedImage image;
 	public URL resource = getClass().getResource("run0.png");
 
@@ -39,7 +42,12 @@ public class Hero{
 		catch(IOException e){
 			e.printStackTrace();
 		}
+		width = image.getWidth();
+		height = image.getHeight();
+	}
 
+	public Rectangle heroCollision(){
+		return(new Rectangle(x, y, width, height));
 	}
 
 	public void reloadImage(){
@@ -104,6 +112,7 @@ public class Hero{
 
 	public void attack(){
 		attackAnimation();
+		bothCollision();
 	}
 
 	public void moveUp(){
@@ -130,4 +139,24 @@ public class Hero{
 		draw.repaint();
 	}
 
+	public void bothCollision(){
+		if(heroCollision().intersects(draw.monster1.monsterCollision())){
+			draw.monster1.hp = - 5;
+			if(draw.monster1.hp <= 0){
+				System.out.println("monster hit");			
+			}
+		}
+		if(heroCollision().intersects(draw.monster2.monsterCollision())){
+			draw.monster2.hp = - 5;
+			if(draw.monster2.hp <= 0){
+				System.out.println("monster hit");			
+			}
+		}
+		if(heroCollision().intersects(draw.monster3.monsterCollision())){
+			draw.monster3.hp = - 5;
+			if(draw.monster3.hp <= 0){
+				System.out.println("monster hit");			
+			}
+		}
+	}
 }
